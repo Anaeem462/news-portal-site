@@ -1,5 +1,6 @@
 
-const fetchfunc = async() => {
+
+const fetchfunc = async () => {
     const url = `https://openapi.programming-hero.com/api/news/categories`
     const response =await fetch(url);
     const data = await response.json();
@@ -8,7 +9,7 @@ const fetchfunc = async() => {
     categories(objdata);
 }
 
-fetchfunc("08");
+fetchfunc();
 
 
 
@@ -18,41 +19,63 @@ const categories = (element) => {
 
     element.forEach(names => {
         const div = document.createElement("div");
-        div.classList.add("col")
-
-    div.innerHTML = `    
-     <div class="p-2 catagories")}">
-     ${names.category_name} ${names.category_id}</div>
+        div.classList.add("col");
+        div.classList.add("py-4")
+        div.classList.add("border");
+       
+ div.innerHTML = `    
+     <a class="p-2 catagories" style="text-decoration:none; color:gray">
+     ${names.category_name} <span class="d-none idnum">${names.category_id}</span></a>
     `
         category.appendChild(div)
     })
-    
+   
+
+    const idname = document.getElementsByClassName("catagories");
+    for (const catagory of idname) {
+        catagory.addEventListener("click", function () {
+            
+            const catagoryName = document.getElementById("news-name");
+            catagoryName.innerText = catagory.innerText;
+            const id = catagory.children[0];
+            fetchById(id.innerText);
+                
+        })}
+
 };
 
-        
-    
+
+
 
 
 
 
 // news section
-const fetchById = (id) => {
+const fetchById = (id="01") => {
     fetch(`https://openapi.programming-hero.com/api/news/category/${id}`)
     .then(res => res.json())
     .then(data => categoriesById(data.data))
 }
 
-fetchById("08")
+ fetchById()
     
       
         const categoriesById = (element) => {
             // console.log(element)
             const newscategory = document.getElementById("news");
+            newscategory.innerHTML = "";
+            let sum = []
+            let counter = 0;
+        
             element.forEach(idnum => {
-              
+              sum.push(idnum.total_view)
              const div = document.createElement("div")
                 div.classList.add("mb-5");
                 div.classList.add("mt-5");
+                div.classList.add("bg-white");
+                div.classList.add("p-4");
+                div.classList.add("rounded");
+                counter += 1;
                 div.innerHTML = `
     <div class="row g-0">
 
@@ -98,8 +121,17 @@ fetchById("08")
     </div>  `
             newscategory.appendChild(div);
             })
-    
-        };
+
+          
+            const sortsum = [...sum.sort(function (a, b) { return b - a })];
+        
+         const newCounter = document.getElementById("news-count");
+            newCounter.innerText = counter;   
+            
+           
+           
+};
+       
 
 
 

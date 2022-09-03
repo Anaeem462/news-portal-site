@@ -10,13 +10,17 @@
 <script src="https://kit.fontawesome.com/bc305f617c.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
-
+<style>
+    span:hover{
+        background-color: red;
+    }
+</style>
 </head>
 
-<body>
+<body style="background-color:rgb(230, 230, 230) ;">
     <header>
         <!----------------------- bootstrap navbar -------------->
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav class="navbar navbar-expand-lg bg-light py-4">
         <div class="container-fluid">
             <div>
                  <a class="navbar-brand text-primary" href="#">Blog News</a>
@@ -44,8 +48,11 @@
     <main class="container">
         <section class="text-center" >           
                 <div id="category" class="row bg-opacity-75" style="background-color: rgb(243, 243, 243);"> </div>
-            
+           
         </section>
+<div class="bg-white p-4 border fs-2"><span id="news-count">0</span> items found for category <span id="news-name" class="text-warning">Breaking News</span>
+</div>
+    
 
         <section id="news" class="mb-3">   </section>
 
