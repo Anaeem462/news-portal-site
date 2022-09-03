@@ -19,12 +19,14 @@ const categories = (element) => {
 
     element.forEach(names => {
         const div = document.createElement("div");
-        div.classList.add("col");
+        div.classList.add("col-2");
         div.classList.add("py-4")
         div.classList.add("border");
+        div.classList.add("catagories");
+     
        
  div.innerHTML = `    
-     <a class="p-2 catagories" style="text-decoration:none; color:gray">
+     <a class="p-2" style="text-decoration:none; color:gray">
      ${names.category_name} <span class="d-none idnum">${names.category_id}</span></a>
     `
         category.appendChild(div)
@@ -37,7 +39,7 @@ const categories = (element) => {
             
             const catagoryName = document.getElementById("news-name");
             catagoryName.innerText = catagory.innerText;
-            const id = catagory.children[0];
+            const id = catagory.children[0].children[0];
             fetchById(id.innerText);
                 
         })}
@@ -51,7 +53,8 @@ const categories = (element) => {
 
 
 // news section
-const fetchById = (id="01") => {
+
+const fetchById = (id = "01") => {
     fetch(`https://openapi.programming-hero.com/api/news/category/${id}`)
     .then(res => res.json())
     .then(data => categoriesById(data.data))
@@ -68,6 +71,7 @@ const fetchById = (id="01") => {
             let counter = 0;
         
             element.forEach(idnum => {
+                // console.log(idnum._id)
               sum.push(idnum.total_view)
              const div = document.createElement("div")
                 div.classList.add("mb-5");
@@ -75,9 +79,11 @@ const fetchById = (id="01") => {
                 div.classList.add("bg-white");
                 div.classList.add("p-4");
                 div.classList.add("rounded");
+                div.classList.add("cardsid");
                 counter += 1;
                 div.innerHTML = `
-    <div class="row g-0">
+    <div class="row g-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <span class="d-none">${idnum._id}</span>
 
          <div class="col-md-4">
             <img src="${idnum.thumbnail_url}" class="img-fluid w-100 h-100" alt="...">
@@ -109,16 +115,14 @@ const fetchById = (id="01") => {
                    <i class="fa-solid fa-star text-warning "></i>
                    <i class="fa-regular fa-star text-warning"></i>
                    <i class="fa-regular fa-star text-warning "></i>
-                </div> 
+                </div>   
 
-    <!-- Button trigger modal -->
-<button type="button" onclick='modal("${idnum._id}")' class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-<i class="fa-solid fa-arrow-right fs-1 fw-400"></i>
-</button>
-  
-        </div>
+       <i class="fa-solid fa-arrow-right fs-1 fw-400" ></i>
+      </div>
         </div>
     </div>  `
+                
+                ;
             newscategory.appendChild(div);
             })
 
@@ -127,56 +131,77 @@ const fetchById = (id="01") => {
         
          const newCounter = document.getElementById("news-count");
             newCounter.innerText = counter;   
+      
             
-           
+
+const cards = document.getElementsByClassName("cardsid");
+            for (const card of cards) {
+                card.addEventListener("click", function () {
+                    const cardschild = card.children[0].children[0].innerText
+                modal(cardschild)
+
+               })
+       
+    
+    
+    
+}    
+
            
 };
-       
+   
 
 
 
 
-// //modal section
-// const modal = (id) => {
-//     console.log(id)
-//     fetch(`https://openapi.programming-hero.com/api/news/${id}`)
-//         .then(res => res.json())
-//         .then(data => modalsById(data.data))
+//modal section
+
+const modal = async (id,output) => {
+    const url = `https://openapi.programming-hero.com/api/news/${id}`
+    const response =await fetch(url);
+    const data = await response.json();
+    const modaldata = data.data[0];
+    output = modaldata;
+   
+ 
+}
 
 
-//         const modalsById = (elements) => {
-//             console.log(elements)
-//             const modals= document.getElementById("modals")
-          
-//                 // console.log(modalId)
-                
-//                 modals.innerHTML = `
-               
-
-// <!-- Modal -->
-// <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-
-//   <div class="modal-dialog">
-
-//     <div class="modal-content">
-
-//       <div class="modal-header">
-
-//         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-
-//         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-//       </div>
-//       <div class="modal-body">
-//         ...
-//       </div>
-//       <div class="modal-footer">
-//         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-//         <button type="button" class="btn btn-primary">Save changes</button>
-//       </div>
-//     </div>
-//   </div>
-// </div>`
-//  }}
+        const modalssection = document.getElementById("modals");
+        modalssection.innerHTML = `
+         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        `
+         
 
 
+
+
+
+    
+    
+           
+            
+
+    
+        
+    
+
+    
+        
     
